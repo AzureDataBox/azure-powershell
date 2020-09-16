@@ -22,7 +22,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resource {
+    internal class Resource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources.Resource", typeof(Resource).Assembly);
@@ -51,7 +51,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Address type: &quot;.
         /// </summary>
-        public static string AddressType {
+        internal static string AddressType {
             get {
                 return ResourceManager.GetString("AddressType", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Address Validation Status: &quot;.
         /// </summary>
-        public static string AddressValidationStatus {
+        internal static string AddressValidationStatus {
             get {
                 return ResourceManager.GetString("AddressValidationStatus", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;The Shipping Address is ambiguous. Please run the cmdlet with &apos;-Verbose&apos; parameter and use any suggested alternate address.&quot;.
         /// </summary>
-        public static string AmbiguousAddressMessage {
+        internal static string AmbiguousAddressMessage {
             get {
                 return ResourceManager.GetString("AmbiguousAddressMessage", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Cancelling Databox job &quot;.
         /// </summary>
-        public static string CancellingDataboxJob {
+        internal static string CancellingDataboxJob {
             get {
                 return ResourceManager.GetString("CancellingDataboxJob", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Cancelling Databox Job &quot;.
         /// </summary>
-        public static string CancellingDataboxJobWarning {
+        internal static string CancellingDataboxJobWarning {
             get {
                 return ResourceManager.GetString("CancellingDataboxJobWarning", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;City: &quot;.
         /// </summary>
-        public static string City {
+        internal static string City {
             get {
                 return ResourceManager.GetString("City", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Company name: &quot;.
         /// </summary>
-        public static string CompanyName {
+        internal static string CompanyName {
             get {
                 return ResourceManager.GetString("CompanyName", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Country: &quot;.
         /// </summary>
-        public static string Country {
+        internal static string Country {
             get {
                 return ResourceManager.GetString("Country", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Creating Databox job &quot;.
         /// </summary>
-        public static string CreatingDataboxJob {
+        internal static string CreatingDataboxJob {
             get {
                 return ResourceManager.GetString("CreatingDataboxJob", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Data transfer details are not valid&quot;.
         /// </summary>
-        public static string DataTransferDetailsAreNotValid {
+        internal static string DataTransferDetailsAreNotValid {
             get {
                 return ResourceManager.GetString("DataTransferDetailsAreNotValid", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Deletign Databox job &quot;.
         /// </summary>
-        public static string DeletingDataboxJob {
+        internal static string DeletingDataboxJob {
             get {
                 return ResourceManager.GetString("DeletingDataboxJob", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;in resource group &quot;.
         /// </summary>
-        public static string InResourceGroup {
+        internal static string InResourceGroup {
             get {
                 return ResourceManager.GetString("InResourceGroup", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;The Shipping Address is not Valid.&quot;.
         /// </summary>
-        public static string InvalidAddressMessage {
+        internal static string InvalidAddressMessage {
             get {
                 return ResourceManager.GetString("InvalidAddressMessage", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Invalid order limit for subscription&quot;.
         /// </summary>
-        public static string InvalidOrderLimitForSubscription {
+        internal static string InvalidOrderLimitForSubscription {
             get {
                 return ResourceManager.GetString("InvalidOrderLimitForSubscription", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Invalid Resource Id&quot;.
         /// </summary>
-        public static string InvalidResourceId {
+        internal static string InvalidResourceId {
             get {
                 return ResourceManager.GetString("InvalidResourceId", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;This job cannot be cancelled&quot;.
         /// </summary>
-        public static string JobCannotBeCancelled {
+        internal static string JobCannotBeCancelled {
             get {
                 return ResourceManager.GetString("JobCannotBeCancelled", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;This job cannot be deleted&quot;.
         /// </summary>
-        public static string JobCannotBeDeleted {
+        internal static string JobCannotBeDeleted {
             get {
                 return ResourceManager.GetString("JobCannotBeDeleted", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Postal code: &quot;.
         /// </summary>
-        public static string PostalCode {
+        internal static string PostalCode {
             get {
                 return ResourceManager.GetString("PostalCode", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Data center or transport preference are not valid&quot;.
         /// </summary>
-        public static string PreferenceAreNotValid {
+        internal static string PreferenceAreNotValid {
             get {
                 return ResourceManager.GetString("PreferenceAreNotValid", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Removing Databox Job &quot;.
         /// </summary>
-        public static string RemoveDataboxJobWarning {
+        internal static string RemoveDataboxJobWarning {
             get {
                 return ResourceManager.GetString("RemoveDataboxJobWarning", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Sku is not available&quot;.
         /// </summary>
-        public static string SkuIsNotAvailable {
+        internal static string SkuIsNotAvailable {
             get {
                 return ResourceManager.GetString("SkuIsNotAvailable", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;State/Province: &quot;.
         /// </summary>
-        public static string StateOrProvince {
+        internal static string StateOrProvince {
             get {
                 return ResourceManager.GetString("StateOrProvince", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Street address 1: &quot; .
         /// </summary>
-        public static string StreetAddress1 {
+        internal static string StreetAddress1 {
             get {
                 return ResourceManager.GetString("StreetAddress1", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Street address 2: &quot;.
         /// </summary>
-        public static string StreetAddress2 {
+        internal static string StreetAddress2 {
             get {
                 return ResourceManager.GetString("StreetAddress2", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Street address 3: &quot;.
         /// </summary>
-        public static string StreetAddress3 {
+        internal static string StreetAddress3 {
             get {
                 return ResourceManager.GetString("StreetAddress3", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Subscription is not allowed to create job&quot;.
         /// </summary>
-        public static string SubscriptionIsNotAllowedToCreateJob {
+        internal static string SubscriptionIsNotAllowedToCreateJob {
             get {
                 return ResourceManager.GetString("SubscriptionIsNotAllowedToCreateJob", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;SUPPORT ADDRESSES: &quot;.
         /// </summary>
-        public static string SupportAddresses {
+        internal static string SupportAddresses {
             get {
                 return ResourceManager.GetString("SupportAddresses", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Updating Databox Job&quot;.
         /// </summary>
-        public static string UpdatingDataboxJob {
+        internal static string UpdatingDataboxJob {
             get {
                 return ResourceManager.GetString("UpdatingDataboxJob", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &quot;Zip extended code: &quot;.
         /// </summary>
-        public static string ZipExtendedCode {
+        internal static string ZipExtendedCode {
             get {
                 return ResourceManager.GetString("ZipExtendedCode", resourceCulture);
             }

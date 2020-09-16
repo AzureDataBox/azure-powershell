@@ -24,7 +24,7 @@ Creates a new databox job using the specified parameters
 Deletes the databox job
 
 ### [Set-AzDataBoxJob](Set-AzDataBoxJob.md)
-{{ Fill in the Synopsis }}
+Updates a databox job using the specified parameters.
 
 ### [Stop-AzDataBoxJob](Stop-AzDataBoxJob.md)
 Cancels an ongoing databox job if the job is in cancellable state.

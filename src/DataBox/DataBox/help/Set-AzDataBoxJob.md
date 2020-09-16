@@ -8,7 +8,7 @@ schema: 2.0.0
 # Set-AzDataBoxJob
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Updates a databox job using the specified parameters.
 
 ## SYNTAX
 
