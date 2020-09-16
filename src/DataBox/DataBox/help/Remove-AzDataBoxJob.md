@@ -41,7 +41,6 @@ PS C:\> Remove-AzDataBoxJob -ResourceGroupName TestRg -name test
 Confirm
 "Cancelling Databox Job "test
 [Y] Yes  [N] No  [S] Suspend  [?] Help (default is "Y"): Y
-
 ```
 
 Deletes the specified databox job
@@ -49,7 +48,6 @@ Deletes the specified databox job
 ### Example 2
 ```powershell
 PS C:\> Remove-AzDataBoxJob -ResourceGroupName TestRg -name test -Force
-
 ```
 
 Deletes the specified databox job forcefully without confirmation
@@ -57,7 +55,6 @@ Deletes the specified databox job forcefully without confirmation
 ### Example 3
 ```powershell
 PS C:\> Remove-AzDataBoxJob -ResourceId "/subscriptions/05b5dd1c-793d-41de-be9f-6f9ed142f695/resourceGroups/TestRg/providers/Microsoft.DataBox/jobs/test"
-
 ```
 
 Deletes the specified databox job

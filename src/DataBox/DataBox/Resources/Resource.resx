@@ -144,6 +144,9 @@
   <data name="CreatingDataboxJob" xml:space="preserve">
     <value>"Creating Databox job "</value>
   </data>
+  <data name="DataTransferDetailsAreNotValid" xml:space="preserve">
+    <value>"Data transfer details are not valid"</value>
+  </data>
   <data name="DeletingDataboxJob" xml:space="preserve">
     <value>"Deletign Databox job "</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="InvalidAddressMessage" xml:space="preserve">
     <value>"The Shipping Address is not Valid."</value>
+  </data>
+  <data name="InvalidOrderLimitForSubscription" xml:space="preserve">
+    <value>"Invalid order limit for subscription"</value>
   </data>
   <data name="InvalidResourceId" xml:space="preserve">
     <value>"Invalid Resource Id"</value>
@@ -165,8 +171,14 @@
   <data name="PostalCode" xml:space="preserve">
     <value>"Postal code: "</value>
   </data>
+  <data name="PreferenceAreNotValid" xml:space="preserve">
+    <value>"Data center or transport preference are not valid"</value>
+  </data>
   <data name="RemoveDataboxJobWarning" xml:space="preserve">
     <value>"Removing Databox Job "</value>
+  </data>
+  <data name="SkuIsNotAvailable" xml:space="preserve">
+    <value>"Sku is not available"</value>
   </data>
   <data name="StateOrProvince" xml:space="preserve">
     <value>"State/Province: "</value>
@@ -180,8 +192,14 @@
   <data name="StreetAddress3" xml:space="preserve">
     <value>"Street address 3: "</value>
   </data>
+  <data name="SubscriptionIsNotAllowedToCreateJob" xml:space="preserve">
+    <value>"Subscription is not allowed to create job"</value>
+  </data>
   <data name="SupportAddresses" xml:space="preserve">
     <value>"SUPPORT ADDRESSES: "</value>
+  </data>
+  <data name="UpdatingDataboxJob" xml:space="preserve">
+    <value>"Updating Databox Job"</value>
   </data>
   <data name="ZipExtendedCode" xml:space="preserve">
     <value>"Zip extended code: "</value>

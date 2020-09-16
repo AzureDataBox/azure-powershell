@@ -18,6 +18,7 @@ using Microsoft.Azure.Management.DataBox.Models;
 using Microsoft.Azure.PowerShell.Cmdlets.DataBox.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using Resource = Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources.Resource;
 
@@ -86,6 +87,11 @@ namespace Microsoft.Azure.Commands.DataBox.Common
         [ValidateNotNullOrEmpty]
         public string Name { get; set; }
 
+        [Parameter(Mandatory = true, HelpMessage = "Identifies the type of data transfer. Available values : ImportToAzure, ExportFromAzure")]
+        [ValidateNotNullOrEmpty]
+        [ValidateSet("ImportToAzure", "ExportFromAzure")]
+        public string DataTransferType { get; set; }
+
         public override void ExecuteCmdlet()
         {
             if (DataBoxType == "DataBoxDisk" && ExpectedDataSizeInTeraBytes.Equals(0))
@@ -113,79 +119,182 @@ namespace Microsoft.Azure.Commands.DataBox.Common
                 ContactName = this.ContactName
             };
 
-            List<DestinationAccountDetails> destinationAccountDetails = new List<DestinationAccountDetails>();
+            var destinationAccountDetails = new List<StorageAccountDetails>();
 
             foreach (var storageAccount in StorageAccountResourceId)
             {
                 destinationAccountDetails.Add(
-                new DestinationAccountDetails(storageAccount));
+                new StorageAccountDetails(storageAccount));
             }
             
             DataBoxDiskJobDetails diskDetails;
             DataBoxJobDetails databoxDetails;
             DataBoxHeavyJobDetails heavyDetails;
-
             JobResource newJobResource = new JobResource();
-
-            Sku sku = new Sku();
-            switch (DataBoxType)
+            if (DataTransferType =="ImportToAzure")
             {
-                case "DataBoxDisk":
-                    diskDetails = new DataBoxDiskJobDetails(contactDetails, shippingAddress, destinationAccountDetails, expectedDataSizeInTeraBytes: ExpectedDataSizeInTeraBytes);
-                    sku.Name = SkuName.DataBoxDisk;
-                    newJobResource = new JobResource(Location, sku, details: diskDetails);
-                    break;
-                case "DataBox":
-                    databoxDetails = new DataBoxJobDetails(contactDetails, shippingAddress, destinationAccountDetails);
-                    sku.Name = SkuName.DataBox;
-                    newJobResource = new JobResource(Location, sku, details: databoxDetails);
-                    break;
-                case "DataBoxHeavy":
-                    heavyDetails = new DataBoxHeavyJobDetails(contactDetails, shippingAddress, destinationAccountDetails);
-                    sku.Name = SkuName.DataBoxHeavy;
-                    newJobResource = new JobResource(Location, sku, details: heavyDetails);
-                    break;
-                default: break;
-            }
-            
-            AddressValidationOutput addressValidationResult = ServiceOperationsExtensions.ValidateAddressMethod(
-                DataBoxManagementClient.Service, Location, shippingAddress, newJobResource.Sku.Name);
-            
-            if (addressValidationResult.ValidationStatus != AddressValidationStatus.Valid)
-            {
-                
-                WriteVerbose(Resource.AddressValidationStatus + addressValidationResult.ValidationStatus + "\n");
+                IList<DataImportDetails> dataImportDetails = new List<DataImportDetails>();
+               
 
-                //print alternate address
-                if (addressValidationResult.ValidationStatus == AddressValidationStatus.Ambiguous)
+                Sku sku = new Sku();
+                switch (DataBoxType)
                 {
-                    WriteVerbose(Resource.SupportAddresses + "\n\n");
-                    foreach (ShippingAddress address in addressValidationResult.AlternateAddresses)
-                    {
-                        WriteVerbose(Resource.AddressType + address.AddressType + "\n");
-                        if (!(string.IsNullOrEmpty(address.CompanyName)))
-                            WriteVerbose(Resource.CompanyName + address.CompanyName);
-                        if (!(string.IsNullOrEmpty(address.StreetAddress1)))
-                            WriteVerbose(Resource.StreetAddress1 + address.StreetAddress1);
-                        if (!(string.IsNullOrEmpty(address.StreetAddress2)))
-                            WriteVerbose(Resource.StreetAddress2 + address.StreetAddress2);
-                        if (!(string.IsNullOrEmpty(address.StreetAddress3)))
-                            WriteVerbose(Resource.StreetAddress3 + address.StreetAddress3);
-                        if (!(string.IsNullOrEmpty(address.City)))
-                            WriteVerbose(Resource.City + address.City);
-                        if (!(string.IsNullOrEmpty(address.StateOrProvince)))
-                            WriteVerbose(Resource.StateOrProvince + address.StateOrProvince);
-                        if (!(string.IsNullOrEmpty(address.Country)))
-                            WriteVerbose(Resource.Country + address.Country);
-                        if (!(string.IsNullOrEmpty(address.PostalCode)))
-                            WriteVerbose(Resource.PostalCode + address.PostalCode);
-                        if (!(string.IsNullOrEmpty(address.ZipExtendedCode)))
-                            WriteVerbose(Resource.ZipExtendedCode + address.ZipExtendedCode);
-                        WriteVerbose("\n\n");
-                    }
-                    throw new PSNotSupportedException(Resource.AmbiguousAddressMessage);
+                    case "DataBoxDisk":
+                        dataImportDetails.Add(new DataImportDetails(destinationAccountDetails.FirstOrDefault()));
+                        diskDetails = new DataBoxDiskJobDetails(contactDetails, shippingAddress: shippingAddress, dataImportDetails: dataImportDetails);
+                        sku.Name = SkuName.DataBoxDisk;
+                        newJobResource = new JobResource(Location, sku, transferType: TransferType.ImportToAzure, details: diskDetails);
+                        break;
+                    case "DataBox":
+                        dataImportDetails.Add(new DataImportDetails(destinationAccountDetails.FirstOrDefault()));
+                        databoxDetails = new DataBoxJobDetails(contactDetails, shippingAddress: shippingAddress, dataImportDetails: dataImportDetails);
+                        sku.Name = SkuName.DataBox;
+                        newJobResource = new JobResource(Location, sku, transferType: TransferType.ImportToAzure, details: databoxDetails);
+                        break;
+                    case "DataBoxHeavy":
+                        dataImportDetails.Add(new DataImportDetails(destinationAccountDetails.FirstOrDefault()));
+                        heavyDetails = new DataBoxHeavyJobDetails(contactDetails, shippingAddress: shippingAddress, dataImportDetails: dataImportDetails);
+                        sku.Name = SkuName.DataBoxHeavy;
+                        newJobResource = new JobResource(Location, sku, transferType: TransferType.ImportToAzure, details: heavyDetails);
+                        break;
+                    default: break;
                 }
-                throw new PSNotSupportedException(Resource.InvalidAddressMessage);
+            }
+            else
+            {
+                IList<DataExportDetails> dataExportDetails = new List<DataExportDetails>();
+               
+                TransferConfiguration transferCofiguration = new TransferConfiguration
+                {
+                    TransferConfigurationType = TransferConfigurationType.TransferAll,
+                    TransferAllDetails = new TransferConfigurationTransferAllDetails
+                    {
+                        Include = new TransferAllDetails
+                        {
+                            DataAccountType = DataAccountType.StorageAccount,
+                            TransferAllBlobs = true,
+                            TransferAllFiles = true
+                        }
+                    }
+                };
+                dataExportDetails.Add(new DataExportDetails(transferCofiguration,destinationAccountDetails.FirstOrDefault()));
+                Sku sku = new Sku();
+                switch (DataBoxType)
+                {
+                    case "DataBoxDisk":
+                       
+                        diskDetails = new DataBoxDiskJobDetails(contactDetails, shippingAddress: shippingAddress, dataExportDetails: dataExportDetails);
+                        sku.Name = SkuName.DataBoxDisk;
+                        newJobResource = new JobResource(Location, sku, TransferType.ExportFromAzure, details: diskDetails);
+                        break;
+                    case "DataBox":
+                       // dataImportDetails.Add(new DataImportDetails(destinationAccountDetails.FirstOrDefault()));
+                        databoxDetails = new DataBoxJobDetails(contactDetails, shippingAddress: shippingAddress, dataExportDetails: dataExportDetails);
+                        sku.Name = SkuName.DataBox;
+                        newJobResource = new JobResource(Location, sku, TransferType.ExportFromAzure, details: databoxDetails);
+                        break;
+                    case "DataBoxHeavy":
+                        // dataImportDetails.Add(new DataImportDetails(destinationAccountDetails.FirstOrDefault()));
+                        heavyDetails = new DataBoxHeavyJobDetails(contactDetails, shippingAddress: shippingAddress, dataExportDetails: dataExportDetails);
+                        sku.Name = SkuName.DataBoxHeavy;
+                        newJobResource = new JobResource(Location, sku, TransferType.ExportFromAzure, details: heavyDetails);
+                        break;
+                    default: break;
+                }
+            }
+
+            var validateInput = new CreateJobValidations
+            {
+                IndividualRequestDetails = new List<ValidationInputRequest>() {
+                    new ValidateAddress()
+                    {
+                        ShippingAddress = shippingAddress,
+                        DeviceType = SkuName.DataBox,
+                        TransportPreferences = new TransportPreferences
+                        {
+                            PreferredShipmentType = TransportShipmentTypes.MicrosoftManaged
+                        }
+                    }
+                }
+            };
+
+            var validateResponse = ServiceOperationsExtensions.ValidateInputs(DataBoxManagementClient.Service, Location, validateInput);
+
+            foreach (ValidationInputResponse validationResponse in validateResponse.IndividualResponseDetails)
+            {
+                switch (validationResponse.GetType().Name)
+                {
+                    case "DataTransferDetailsValidationResponseProperties":
+                        if (!(((DataTransferDetailsValidationResponseProperties)validationResponse).Status == ValidationStatus.Valid))
+                        {
+                            throw new PSNotSupportedException(Resource.DataTransferDetailsAreNotValid);
+                        }
+                        break;
+                    case "SubscriptionIsAllowedToCreateJobValidationResponseProperties":
+                        if (!(((SubscriptionIsAllowedToCreateJobValidationResponseProperties)validationResponse).Status == ValidationStatus.Valid))
+                        {
+                            throw new PSNotSupportedException(Resource.SubscriptionIsNotAllowedToCreateJob);
+                        }
+                        break;
+                    case "SkuAvailabilityValidationResponseProperties":
+                        if (!(((SkuAvailabilityValidationResponseProperties)validationResponse).Status == ValidationStatus.Valid))
+                        {
+                            throw new PSNotSupportedException(Resource.SkuIsNotAvailable);
+                        }
+                        break;
+                    case "CreateOrderLimitForSubscriptionValidationResponseProperties":
+                        if (!(((CreateOrderLimitForSubscriptionValidationResponseProperties)validationResponse).Status == ValidationStatus.Valid))
+                        {
+                            throw new PSNotSupportedException(Resource.InvalidOrderLimitForSubscription);
+                        }
+                        break;
+                    case "PreferencesValidationResponseProperties":
+                        if (!(((PreferencesValidationResponseProperties)validationResponse).Status == ValidationStatus.Valid))
+                        {
+                            throw new PSNotSupportedException(Resource.PreferenceAreNotValid);
+                        }
+                        break;
+                    case "AddressValidationProperties":
+                        if (!(((AddressValidationProperties)validationResponse).ValidationStatus == AddressValidationStatus.Valid))
+                        {
+                            var addressValidationProperties = (AddressValidationProperties)validationResponse;
+                            WriteVerbose(Resource.AddressValidationStatus + addressValidationProperties.ValidationStatus + "\n");
+
+                            //print alternate address
+                            if (addressValidationProperties.ValidationStatus == AddressValidationStatus.Ambiguous)
+                            {
+                                WriteVerbose(Resource.SupportAddresses + "\n\n");
+                                foreach (ShippingAddress address in addressValidationProperties.AlternateAddresses)
+                                {
+                                    WriteVerbose(Resource.AddressType + address.AddressType + "\n");
+                                    if (!(string.IsNullOrEmpty(address.CompanyName)))
+                                        WriteVerbose(Resource.CompanyName + address.CompanyName);
+                                    if (!(string.IsNullOrEmpty(address.StreetAddress1)))
+                                        WriteVerbose(Resource.StreetAddress1 + address.StreetAddress1);
+                                    if (!(string.IsNullOrEmpty(address.StreetAddress2)))
+                                        WriteVerbose(Resource.StreetAddress2 + address.StreetAddress2);
+                                    if (!(string.IsNullOrEmpty(address.StreetAddress3)))
+                                        WriteVerbose(Resource.StreetAddress3 + address.StreetAddress3);
+                                    if (!(string.IsNullOrEmpty(address.City)))
+                                        WriteVerbose(Resource.City + address.City);
+                                    if (!(string.IsNullOrEmpty(address.StateOrProvince)))
+                                        WriteVerbose(Resource.StateOrProvince + address.StateOrProvince);
+                                    if (!(string.IsNullOrEmpty(address.Country)))
+                                        WriteVerbose(Resource.Country + address.Country);
+                                    if (!(string.IsNullOrEmpty(address.PostalCode)))
+                                        WriteVerbose(Resource.PostalCode + address.PostalCode);
+                                    if (!(string.IsNullOrEmpty(address.ZipExtendedCode)))
+                                        WriteVerbose(Resource.ZipExtendedCode + address.ZipExtendedCode);
+                                    WriteVerbose("\n\n");
+                                }
+                                throw new PSNotSupportedException(Resource.AmbiguousAddressMessage);
+                            }
+                            throw new PSNotSupportedException(Resource.InvalidAddressMessage);
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
 
             if (ShouldProcess(this.Name, string.Format(Resource.CreatingDataboxJob + this.Name + Resource.InResourceGroup + this.ResourceGroupName)))
@@ -197,7 +306,8 @@ namespace Microsoft.Azure.Commands.DataBox.Common
                             newJobResource);
 
                 WriteObject(new PSDataBoxJob(finalJobResource));
-            }   
+            }
+
         }
     }
 }

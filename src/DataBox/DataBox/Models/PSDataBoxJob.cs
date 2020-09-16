@@ -20,6 +20,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Models
         public string ResourceGroup;
 
         public string Id;
+        public string PrincipalId;
 
         public PSDataBoxJob()
         {
@@ -36,6 +37,10 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Models
             this.JobResource = jobResource;
             this.ResourceGroup = ResourceIdHandler.GetResourceGroupName(jobResource.Id);
             this.Id = jobResource.Id;
+            if (jobResource.Identity.PrincipalId != null)
+            {
+                this.PrincipalId = jobResource.Identity.PrincipalId;
+            }
         }
     }
 }
