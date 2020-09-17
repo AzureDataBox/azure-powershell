@@ -41,7 +41,6 @@ PS C:\> Stop-AzDataBoxJob -ResourceGroupName "TestRg" -name "test" -Reason "Rand
 Confirm
 "Removing Databox Job "test
 [Y] Yes  [N] No  [S] Suspend  [?] Help (default is "Y"): Y
-
 ```
 
 Cancels the specified databox job
@@ -49,7 +48,6 @@ Cancels the specified databox job
 ### Example 2
 ```powershell
 PS C:\> Stop-AzDataBoxJob -ResourceGroupName "TestRg" -name "test" -Reason "Random" -Force
-
 ```
 
 Cancels the specified databox job forcefully without confirmation
@@ -57,7 +55,6 @@ Cancels the specified databox job forcefully without confirmation
 ### Example 3
 ```powershell
 PS C:\> Stop-AzDataBoxJob -ResourceId "/subscriptions/05b5dd1c-793d-41de-be9f-6f9ed142f695/resourceGroups/TestRg/providers/Microsoft.DataBox/jobs/test"
-
 ```
 
 Cancels the specified databox job

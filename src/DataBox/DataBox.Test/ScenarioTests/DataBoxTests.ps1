@@ -26,7 +26,7 @@ function Test-GetNonExistingDataBoxJob
     New-AzResourceGroup -Name $rgname -Location $rglocation -Force
     
     # Test
-    Assert-ThrowsContains { Get-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname } "not found"    
+    Assert-ThrowsContains { Get-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname } "NotFound"    
 }
 
 <#
@@ -39,6 +39,7 @@ function Test-GetCredentialForNewlyCreatedJob
     $dfname = Get-DataBoxJobName
     $rgname = Get-ResourceGroupName
 	$rglocation = 'WestUS'
+    $DataTransferType = "ImportToAzure"
     
     
     New-AzResourceGroup -Name $rgname -Location $rglocation -Force
@@ -48,9 +49,9 @@ function Test-GetCredentialForNewlyCreatedJob
 
     try
     {
-        $a = Create-Job $dfname $rgname $storageaccount.Id
+        $a = Create-Job $dfname $rgname $storageaccount.Id $transferType
 		
-		Assert-ThrowsContains {Get-AzDataBoxCredential -ResourceId $a.Id} "Secrets are not yet generated"
+		Assert-ThrowsContains {Get-AzDataBoxCredential -ResourceId $a.Id} "BadRequest"
 
     }
     finally
@@ -70,9 +71,55 @@ function Create-Job {
 	$dfname = $args[0]
 	$rgname = $args[1]
 	$storagergid = $args[2]
-	$a = New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 '16 TOWNSEND ST' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'Random' -StorageAccountResourceId $storagergid  -DataBoxType DataBox -ResourceGroupName $rgname -Name $dfname -ErrorAction Ignore
+	$a = New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 '16 TOWNSEND ST' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'Random' -StorageAccountResourceId $storagergid  -DataBoxType DataBox -ResourceGroupName $rgname -Name $dfname -ErrorAction Ignore -DataTransferType ImportToAzure
 	return $a
 }
+
+<#
+The location is hard coded because the cmdlet needs an address. Without hard coding the location and the 
+address, the cmdlet cannot be run and hence cannot be tested.
+NOTE : Use a subscription id having West US location to run the test successfully.
+#>
+function Create-JobExport {
+	$dfname = $args[0]
+	$rgname = $args[1]
+	$storagergid = $args[2]
+	$a = New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 '16 TOWNSEND ST' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'Random' -StorageAccountResourceId $storagergid  -DataBoxType DataBox -ResourceGroupName $rgname -Name $dfname -ErrorAction Ignore -DataTransferType ExportFromAzure
+	return $a
+}
+
+<#
+.SYNOPSIS
+Update a databox job and ensure it by checking that value updated is not null.
+The databox job will be cancelled and removed when the test finishes.
+NOTE : Use a subscription id having West US location to run the test successfully.
+#>
+function Test-SetDataboxJob
+{
+    $dfname = Get-DataBoxJobName
+    $rgname = Get-ResourceGroupName
+	$rglocation = 'WestUS'
+   
+    New-AzResourceGroup -Name $rgname -Location $rglocation -Force
+
+	$storageaccountname = Get-StorageAccountName
+	$storageaccount = New-AzStorageAccount -ResourceGroupName $rgname -Name $storageaccountname  -Location $rglocation 
+
+    try
+    {
+        Create-Job $dfname $rgname $storageaccount.Id 
+        $actual = Set-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname -AssignIdentity
+		 
+        Assert-NotNull $actual.PrincipalId
+    }
+    finally
+    {
+        Stop-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname -Reason "Random" -Force
+		Remove-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname  -Force
+		Remove-AzStorageAccount -ResourceGroupName $rgname -Name $storageaccountname 
+    }
+}
+
 <#
 .SYNOPSIS
 Create a databox job and then do a Get to compare the result are identical.
@@ -108,6 +155,38 @@ function Test-CreateDataBoxJob
 
 <#
 .SYNOPSIS
+Create a databox job with transfer type export and then do a Get to compare the result are identical.
+The databox job will be cancelled and removed when the test finishes.
+NOTE : Use a subscription id having West US location to run the test successfully.
+#>
+function Test-CreateDataBoxExportJob
+{
+    $dfname = Get-DataBoxJobName
+    $rgname = Get-ResourceGroupName
+	$rglocation = 'WestUS'
+    
+    New-AzResourceGroup -Name $rgname -Location $rglocation -Force
+
+	$storageaccountname = Get-StorageAccountName
+	$storageaccount = New-AzStorageAccount -ResourceGroupName $rgname -Name $storageaccountname  -Location $rglocation 
+
+    try
+    {
+        $actual = Create-JobExport $dfname $rgname $storageaccount.Id 
+		$expected = Get-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname
+
+        Assert-AreEqual $expected.Id $actual.Id
+    }
+    finally
+    {
+        Stop-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname -Reason "Random" -Force
+		Remove-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname  -Force
+		Remove-AzStorageAccount -ResourceGroupName $rgname -Name $storageaccountname 
+    }
+}
+
+<#
+.SYNOPSIS
 Create an already existing databox job and check for the exception.
 Creates a new job. Again tries to create it and gets an exception.
 Finally removes the job.
@@ -127,8 +206,8 @@ function Test-CreateAlreadyExistingDataBoxJob
     try
     {
         Create-Job $dfname $rgname $storageaccount.Id
-        Assert-ThrowsContains {New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 '16 TOWNSEND ST' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'Random' -StorageAccountResourceId $storageaccount.Id  -DataBoxType DataBox -ResourceGroupName $rgname -Name $dfname 
-		} "order already exists with the same name"
+        Assert-ThrowsContains {New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 '16 TOWNSEND ST' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'Random' -StorageAccountResourceId $storageaccount.Id  -DataBoxType DataBox -ResourceGroupName $rgname -Name $dfname -DataTransferType ImportToAzure
+		} "BadRequest"
     }
     finally
     {
@@ -181,8 +260,7 @@ function Test-RemoveDataBoxJob
     $dfname = Get-DataBoxJobName
     $rgname = Get-ResourceGroupName
 	$rglocation = Get-ProviderLocation ResourceManagement
-    
-    
+  
     New-AzResourceGroup -Name $rgname -Location $rglocation -Force
 	
 	$storageaccountname = Get-StorageAccountName
@@ -190,11 +268,11 @@ function Test-RemoveDataBoxJob
 
     try
     {
-        Create-Job $dfname $rgname $storageaccount.Id
+        Create-Job $dfname $rgname $storageaccount.Id 
 		Stop-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname -Reason "Random" -Force
 		Remove-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname -Force
 
-        Assert-ThrowsContains { Get-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname } "Could not find" 
+        Assert-ThrowsContains { Get-AzDataBoxJob -ResourceGroupName $rgname -Name $dfname } "NotFound" 
     }
 	finally
 	{
@@ -210,10 +288,8 @@ The Location and Address is hard coded because the cmdlet requires an ambiguous 
 #>
 function Test-JobResourceObjectAmbiguousAddress
 {
-    
-	Assert-ThrowsContains {New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 '16 TOWNSEND ST11' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'Random' -StorageAccountResourceId "random"  -DataBoxType DataBox -ResourceGroupName "Random" -Name "Random" 
+	Assert-ThrowsContains {New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 '16 TOWNSEND ST11' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'Random' -StorageAccountResourceId "random"  -DataBoxType DataBox -ResourceGroupName "Random" -Name "Random" -DataTransferType ImportToAzure
     } "ambiguous"
- 
 }
 
 <#
@@ -223,8 +299,6 @@ The Location and Address is hard coded because the cmdlet requires an invalid ad
 #>
 function Test-JobResourceObjectInvalidAddress
 {
-    
-	Assert-ThrowsContains {New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 'blah blah' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'Random' -StorageAccountResourceId "Random"  -DataBoxType DataBox -ResourceGroupName "Random" -Name "Random" 
+	Assert-ThrowsContains {New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 'blah blah' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'Random' -StorageAccountResourceId "Random"  -DataBoxType DataBox -ResourceGroupName "Random" -Name "Random" -DataTransferType ImportToAzure
 	} "not Valid"
- 
 }

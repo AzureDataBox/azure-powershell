@@ -19,7 +19,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -142,6 +142,15 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;Data transfer details are not valid&quot;.
+        /// </summary>
+        internal static string DataTransferDetailsAreNotValid {
+            get {
+                return ResourceManager.GetString("DataTransferDetailsAreNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;Deletign Databox job &quot;.
         /// </summary>
         internal static string DeletingDataboxJob {
@@ -165,6 +174,15 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         internal static string InvalidAddressMessage {
             get {
                 return ResourceManager.GetString("InvalidAddressMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Invalid order limit for subscription&quot;.
+        /// </summary>
+        internal static string InvalidOrderLimitForSubscription {
+            get {
+                return ResourceManager.GetString("InvalidOrderLimitForSubscription", resourceCulture);
             }
         }
         
@@ -205,11 +223,29 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;Data center or transport preference are not valid&quot;.
+        /// </summary>
+        internal static string PreferenceAreNotValid {
+            get {
+                return ResourceManager.GetString("PreferenceAreNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;Removing Databox Job &quot;.
         /// </summary>
         internal static string RemoveDataboxJobWarning {
             get {
                 return ResourceManager.GetString("RemoveDataboxJobWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Sku is not available&quot;.
+        /// </summary>
+        internal static string SkuIsNotAvailable {
+            get {
+                return ResourceManager.GetString("SkuIsNotAvailable", resourceCulture);
             }
         }
         
@@ -250,11 +286,29 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.DataBox.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;Subscription is not allowed to create job&quot;.
+        /// </summary>
+        internal static string SubscriptionIsNotAllowedToCreateJob {
+            get {
+                return ResourceManager.GetString("SubscriptionIsNotAllowedToCreateJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;SUPPORT ADDRESSES: &quot;.
         /// </summary>
         internal static string SupportAddresses {
             get {
                 return ResourceManager.GetString("SupportAddresses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Updating Databox Job&quot;.
+        /// </summary>
+        internal static string UpdatingDataboxJob {
+            get {
+                return ResourceManager.GetString("UpdatingDataboxJob", resourceCulture);
             }
         }
         

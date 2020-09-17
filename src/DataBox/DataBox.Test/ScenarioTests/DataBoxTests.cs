@@ -36,6 +36,14 @@ namespace Microsoft.Azure.Commands.DataBox.Test
             
             RunPowerShellTest(_logger, "Test-GetNonExistingDataBoxJob");
         }
+        
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestSetDataboxJob()
+        {
+
+            RunPowerShellTest(_logger, "Test-SetDataboxJob");
+        }
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
@@ -51,6 +59,14 @@ namespace Microsoft.Azure.Commands.DataBox.Test
         {
 
             RunPowerShellTest(_logger, "Test-CreateDataBoxJob");
+        }
+
+        [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
+        public void TestCreateDataBoxExportJob()
+        {
+
+            RunPowerShellTest(_logger, "Test-CreateDataBoxExportJob");
         }
 
         [Fact]

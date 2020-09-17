@@ -13,11 +13,11 @@ Creates a new databox job using the specified parameters
 ## SYNTAX
 
 ```
-New-AzDataBoxJob -ResourceGroupName <String> -Name <String> [-DefaultProfile <IAzureContextContainer>]
- -Location <String> [-AddressType <AddressType>] [-CompanyName <String>] -StreetAddress1 <String>
- [-StreetAddress2 <String>] [-StreetAddress3 <String>] -PostalCode <String> -City <String>
- -StateOrProvinceCode <String> -CountryCode <String> -EmailId <String[]> -PhoneNumber <String>
- -ContactName <String> -StorageAccountResourceId <String[]> -DataBoxType <String>
+New-AzDataBoxJob -ResourceGroupName <String> -Name <String> -DataTransferType <String>
+ [-DefaultProfile <IAzureContextContainer>] -Location <String> [-AddressType <AddressType>]
+ [-CompanyName <String>] -StreetAddress1 <String> [-StreetAddress2 <String>] [-StreetAddress3 <String>]
+ -PostalCode <String> -City <String> -StateOrProvinceCode <String> -CountryCode <String> -EmailId <String[]>
+ -PhoneNumber <String> -ContactName <String> -StorageAccountResourceId <String[]> -DataBoxType <String>
  [-ExpectedDataSizeInTeraBytes <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
@@ -29,14 +29,24 @@ The **New-AzDataBoxJob** cmdlet is used to create a new databox job by specifyin
 ### Example 1
 ```powershell
 PS C:\> $s1 = <Storage Account Resource Id>
-PS C:\> New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 '16 TOWNSEND ST' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'John' -StorageAccount $s1 -DataBoxType DataBox -ResourceGroupName TestRg -Name OrderTest
+PS C:\> New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 '16 TOWNSEND ST' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'John' -StorageAccountResourceId $s1 -DataBoxType DataBox -ResourceGroupName TestRg -Name importjobtest -DataTransferType ImportToAzure
 
 jobResource.Name jobResource.Sku.Name jobResource.Status jobResource.StartTime jobResource.Location ResourceGroup
 ---------------- -------------------- ------------------ --------------------- -------------------- -------------
-OrderTest       DataBox              DeviceOrdered      05-07-2019 05:25:30   westus               TestRg
+OrderTest       DataBox              DeviceOrdered      05-07-2020 05:25:30   westus               TestRg
 ```
 
 The cmdlet takes all the required parameters and some optional parameters to create the databox job.
+
+### Example 2
+```powershell
+PS C:\> $s1 = <Storage Account Resource Id>
+PS C:\> New-AzDataBoxJob -Location 'WestUS' -StreetAddress1 '16 TOWNSEND ST' -PostalCode 94107 -City 'San Francisco' -StateOrProvinceCode 'CA' -CountryCode 'US' -EmailId 'abc@outlook.com' -PhoneNumber 1234567891 -ContactName 'John' -StorageAccountResourceId $s1 -DataBoxType DataBox -ResourceGroupName TestRg -Name importjobtest -DataTransferType ExportFromAzure
+
+jobResource.Name jobResource.Sku.Name jobResource.Status jobResource.StartTime jobResource.Location ResourceGroup
+---------------- -------------------- ------------------ --------------------- -------------------- -------------
+OrderTest1       DataBox              DeviceOrdered      05-07-2020 05:25:30   westus               TestRg
+```
 
 ## PARAMETERS
 
@@ -123,7 +133,23 @@ Sku type of Databox.  Available values : DataBoxDisk, Databox, DataBoxHeavy
 Type: System.String
 Parameter Sets: (All)
 Aliases:
-Accepted values: DataBoxDisk, Databox, DataBoxHeavy
+Accepted values: DataBoxDisk, DataBox, DataBoxHeavy
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DataTransferType
+Identifies the type of data transfer. Available values : ImportToAzure, ExportFromAzure
+
+```yaml
+Type: System.String
+Parameter Sets: (All)
+Aliases:
+Accepted values: ImportToAzure, ExportFromAzure
 
 Required: True
 Position: Named

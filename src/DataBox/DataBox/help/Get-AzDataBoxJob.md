@@ -73,7 +73,6 @@ PS C:\> Get-AzDataBoxJob -ResourceGroupName TestRg1 -Name testtip2
 jobResource.Name        jobResource.Sku.Name jobResource.Status  jobResource.StartTime jobResource.Location ResourceGroup
 ----------------        -------------------- ------------------  --------------------- -------------------- -------------
 testtip2                DataBox              Cancelled           10-09-2018 06:34:53   westus               TestRg1
-
 ```
 
 Get-AzDataBoxJob with ResourceGroupName and Name specified will fetch that specific databox job
@@ -85,7 +84,6 @@ PS C:\> Get-AzDataBoxJob -ResourceId "/subscriptions/05b5dd1c-793d-41de-be9f-6f9
 jobResource.Name        jobResource.Sku.Name jobResource.Status  jobResource.StartTime jobResource.Location ResourceGroup
 ----------------        -------------------- ------------------  --------------------- -------------------- -------------
 testtip2                DataBox              Cancelled           10-09-2018 06:34:53   westus               TestRg1
-
 ```
 
 Get-AzDataBoxJob with ResourceId specified will fetch that specific databox job
