@@ -94,10 +94,6 @@ namespace Microsoft.Azure.Commands.DataBox.Common
                 {
                     var keyEncryptionKey = new KeyEncryptionKey(KekType.CustomerManaged)
                     {
-                        //KekUrl = @"https://sdkkeyvault.vault.azure.net/keys/SSDKEY/",
-                        //KekVaultResourceID =
-                        //     "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.KeyVault/vaults/SDKKeyVault"
-
                         KekUrl = KeyId,
                         KekVaultResourceID = KeyVaultResourceID 
                     };
